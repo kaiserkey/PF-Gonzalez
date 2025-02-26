@@ -1,0 +1,65 @@
+<div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card shadow-sm">
+          <div class="card-header bg-primary text-white text-center">
+            <h5 class="mb-0">
+              {{ alumnoId ? "Editar Alumno" : "Registrar Alumno" }}
+            </h5>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="alumnoForm" (ngSubmit)="guardarAlumno()">
+              <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input
+                  id="nombre"
+                  formControlName="nombre"
+                  class="form-control form-control-lg"
+                  placeholder="Ingrese el nombre"
+                  required
+                />
+              </div>
+  
+              <div class="mb-3">
+                <label for="apellido" class="form-label">Apellido</label>
+                <input
+                  id="apellido"
+                  formControlName="apellido"
+                  class="form-control form-control-lg"
+                  placeholder="Ingrese el apellido"
+                  required
+                />
+              </div>
+  
+              <div class="mb-3">
+                <label for="edad" class="form-label">Edad</label>
+                <input
+                  id="edad"
+                  type="number"
+                  formControlName="edad"
+                  class="form-control form-control-lg"
+                  placeholder="Ingrese la edad"
+                  required
+                />
+              </div>
+  
+              <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary w-48">
+                  <i class="bi bi-save me-2"></i>
+                  {{ alumnoId ? "Actualizar" : "Guardar" }}
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary w-48"
+                  routerLink="/alumnos/lista-alumnos"
+                >
+                  <i class="bi bi-arrow-left me-2"></i> Volver
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,64 @@
+<div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card shadow-sm">
+          <div class="card-header bg-primary text-white text-center">
+            <h5 class="mb-0">
+              {{ claseId ? "Editar Clase" : "Registrar Clase" }}
+            </h5>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="claseForm" (ngSubmit)="guardarClase()">
+              <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input
+                  id="nombre"
+                  formControlName="nombre"
+                  class="form-control form-control-lg"
+                  placeholder="Ingrese el nombre de la clase"
+                  required
+                />
+              </div>
+  
+              <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <input
+                  id="descripcion"
+                  formControlName="descripcion"
+                  class="form-control form-control-lg"
+                  placeholder="Ingrese la descripción de la clase"
+                  required
+                />
+              </div>
+  
+              <div class="mb-3">
+                <label for="horario" class="form-label">Horario</label>
+                <input
+                  id="horario"
+                  formControlName="horario"
+                  class="form-control form-control-lg"
+                  placeholder="Ingrese el horario de la clase"
+                  required
+                />
+              </div>
+  
+              <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary w-48">
+                  <i class="bi bi-save me-2"></i>
+                  {{ claseId ? "Actualizar" : "Guardar" }}
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary w-48"
+                  routerLink="/clases/lista-clases"
+                >
+                  <i class="bi bi-arrow-left me-2"></i> Volver
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

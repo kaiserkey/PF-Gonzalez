@@ -1,0 +1,51 @@
+<div class="container my-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white text-center">
+      <h2 appHeaderSize>Lista de Cursos</h2>
+    </div>
+    <div class="card-body">
+      <mat-table
+        [dataSource]="cursos"
+        class="table table-bordered table-striped"
+      >
+        <ng-container matColumnDef="nombre">
+          <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+          <mat-cell *matCellDef="let curso">{{ curso.nombre }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="descripcion">
+          <mat-header-cell *matHeaderCellDef>Descripción</mat-header-cell>
+          <mat-cell *matCellDef="let curso">{{ curso.descripcion }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="duracion">
+          <mat-header-cell *matHeaderCellDef>Duración</mat-header-cell>
+          <mat-cell *matCellDef="let curso"
+            >{{ curso.duracion }} horas</mat-cell
+          >
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+          <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+          <mat-cell *matCellDef="let curso">
+            <a
+              [routerLink]="['/cursos/abm-cursos', curso.id]"
+              class="btn btn-warning btn-sm me-2"
+            >
+              <i class="bi bi-pencil-fill"></i> Editar
+            </a>
+            <button
+              class="btn btn-danger btn-sm"
+              (click)="eliminarCurso(curso.id)"
+            >
+              <i class="bi bi-trash-fill"></i> Eliminar
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+    </div>
+  </div>
+</div>

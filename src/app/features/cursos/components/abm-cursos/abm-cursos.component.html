@@ -1,0 +1,66 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center">
+          <h5 class="mb-0">
+            {{ cursoId ? "Editar Curso" : "Registrar Curso" }}
+          </h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="cursoForm" (ngSubmit)="guardarCurso()">
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input
+                id="nombre"
+                formControlName="nombre"
+                class="form-control form-control-lg"
+                placeholder="Ingrese el nombre del curso"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="descripcion" class="form-label">Descripción</label>
+              <input
+                id="descripcion"
+                formControlName="descripcion"
+                class="form-control form-control-lg"
+                placeholder="Ingrese la descripción del curso"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="duracion" class="form-label"
+                >Duración (en horas)</label
+              >
+              <input
+                id="duracion"
+                type="number"
+                formControlName="duracion"
+                class="form-control form-control-lg"
+                placeholder="Ingrese la duración del curso"
+                required
+              />
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <button type="submit" class="btn btn-primary w-48">
+                <i class="bi bi-save me-2"></i>
+                {{ cursoId ? "Actualizar" : "Guardar" }}
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary w-48"
+                routerLink="/cursos/lista-cursos"
+              >
+                <i class="bi bi-arrow-left me-2"></i> Volver
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
