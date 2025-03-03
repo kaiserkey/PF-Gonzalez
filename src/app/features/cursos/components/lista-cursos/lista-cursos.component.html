@@ -4,29 +4,47 @@
       <h2 appHeaderSize>Lista de Cursos</h2>
     </div>
     <div class="card-body">
-      <mat-table
-        [dataSource]="cursos"
-        class="table table-bordered table-striped"
-      >
+      <table mat-table [dataSource]="cursos" class="mat-elevation-z8">
         <ng-container matColumnDef="nombre">
-          <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
-          <mat-cell *matCellDef="let curso">{{ curso.nombre }}</mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="descripcion">
-          <mat-header-cell *matHeaderCellDef>Descripción</mat-header-cell>
-          <mat-cell *matCellDef="let curso">{{ curso.descripcion }}</mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="duracion">
-          <mat-header-cell *matHeaderCellDef>Duración</mat-header-cell>
-          <mat-cell *matCellDef="let curso"
-            >{{ curso.duracion }} horas</mat-cell
+          <mat-header-cell *matHeaderCellDef class="fw-bold"
+            >Nombre</mat-header-cell
           >
+          <mat-cell *matCellDef="let curso">
+            <i class="bi bi-book me-2"></i> {{ curso.nombre }}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="horas">
+          <mat-header-cell *matHeaderCellDef class="fw-bold"
+            >Horas</mat-header-cell
+          >
+          <mat-cell *matCellDef="let curso">
+            <i class="bi bi-clock me-2"></i> {{ curso.horas }}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="clases">
+          <mat-header-cell *matHeaderCellDef class="fw-bold"
+            >Clases</mat-header-cell
+          >
+          <mat-cell *matCellDef="let curso">
+            <i class="bi bi-list-ol me-2"></i> {{ curso.clases }}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="profesor">
+          <mat-header-cell *matHeaderCellDef class="fw-bold"
+            >Profesor</mat-header-cell
+          >
+          <mat-cell *matCellDef="let curso">
+            <i class="bi bi-person-badge me-2"></i> {{ curso.profesor }}
+          </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="acciones">
-          <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef class="fw-bold"
+            >Acciones</mat-header-cell
+          >
           <mat-cell *matCellDef="let curso">
             <a
               [routerLink]="['/cursos/abm-cursos', curso.id]"
@@ -45,7 +63,7 @@
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-      </mat-table>
+      </table>
     </div>
   </div>
 </div>

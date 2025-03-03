@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CursosService, Curso } from '../../../../core/services/cursos.service';
-import { Subject } from 'rxjs';
-import { takeUntil, switchMap } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-abm-cursos',
@@ -11,10 +10,9 @@ import { takeUntil, switchMap } from 'rxjs/operators';
   styleUrls: ['./abm-cursos.component.css'],
   standalone: false,
 })
-export class AbmCursosComponent implements OnInit, OnDestroy {
+export class AbmCursosComponent implements OnInit {
   cursoForm: FormGroup;
-  cursoId: number | null = null;
-  private unsubscribe$ = new Subject<void>();
+  cursoId: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -24,29 +22,25 @@ export class AbmCursosComponent implements OnInit, OnDestroy {
   ) {
     this.cursoForm = this.fb.group({
       nombre: ['', Validators.required],
-      descripcion: ['', Validators.required],
-      duracion: ['', [Validators.required, Validators.min(1)]],
+      horas: ['', [Validators.required, Validators.min(1)]],
+      clases: ['', [Validators.required, Validators.min(1)]],
+      profesor: ['', Validators.required],
     });
   }
 
   ngOnInit() {
-    this.route.paramMap
-      .pipe(
-        takeUntil(this.unsubscribe$),
-        switchMap((params) => {
-          const id = params.get('id');
-          if (id) {
-            this.cursoId = +id;
-            return this.cursosService.obtenerCursoPorId(this.cursoId);
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.cursoId = id;
+      this.cursosService
+        .obtenerCursoPorId(this.cursoId)
+        .pipe(take(1))
+        .subscribe((curso) => {
+          if (curso) {
+            this.cursoForm.patchValue(curso);
           }
-          return [];
-        })
-      )
-      .subscribe((curso) => {
-        if (curso) {
-          this.cursoForm.patchValue(curso);
-        }
-      });
+        });
+    }
   }
 
   guardarCurso() {
@@ -54,19 +48,18 @@ export class AbmCursosComponent implements OnInit, OnDestroy {
       if (this.cursoId) {
         this.cursosService
           .actualizarCurso(this.cursoId, this.cursoForm.value)
-          .pipe(takeUntil(this.unsubscribe$))
-          .subscribe(() => this.router.navigate(['/cursos/lista-cursos']));
+          .pipe(take(1))
+          .subscribe(() => {
+            this.router.navigate(['/cursos/lista-cursos']);
+          });
       } else {
         this.cursosService
           .agregarCurso(this.cursoForm.value)
-          .pipe(takeUntil(this.unsubscribe$))
-          .subscribe(() => this.router.navigate(['/cursos/lista-cursos']));
+          .pipe(take(1))
+          .subscribe(() => {
+            this.router.navigate(['/cursos/lista-cursos']);
+          });
       }
     }
-  }
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 }

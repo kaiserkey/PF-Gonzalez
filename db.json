@@ -78,46 +78,40 @@
   ],
   "clases": [
     {
-      "id": 1,
+      "id": "1",
       "nombre": "Introducción a Angular",
       "descripcion": "Conceptos básicos y configuración del entorno.",
       "horario": "Lunes 10:00 - 12:00"
     },
     {
-      "id": 2,
+      "id": "2",
       "nombre": "Componentes y Directivas",
       "descripcion": "Creación y uso de componentes y directivas en Angular.",
       "horario": "Miércoles 14:00 - 16:00"
     },
     {
-      "id": 3,
+      "id": "3",
       "nombre": "Fundamentos de Machine Learning",
       "descripcion": "Conceptos básicos y algoritmos de ML.",
       "horario": "Martes 10:00 - 12:00"
     },
     {
-      "id": 4,
+      "id": "4",
       "nombre": "Redes Neuronales",
       "descripcion": "Introducción a las redes neuronales artificiales.",
       "horario": "Jueves 16:00 - 18:00"
     },
     {
-      "id": 5,
+      "id": "5",
       "nombre": "Programación en C#",
       "descripcion": "Fundamentos de C# aplicados a .NET.",
       "horario": "Lunes 16:00 - 18:00"
     },
     {
-      "id": 6,
+      "id": "6",
       "nombre": "Optimización de consultas SQL",
       "descripcion": "Mejores prácticas en bases de datos relacionales.",
       "horario": "Viernes 14:00 - 16:00"
-    },
-    {
-      "id": 7,
-      "nombre": "Seguridad en redes",
-      "descripcion": "Conceptos y herramientas para la ciberseguridad.",
-      "horario": "Miércoles 10:00 - 12:00"
     }
   ],
   "inscripciones": [

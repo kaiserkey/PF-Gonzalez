@@ -21,26 +21,36 @@
             </div>
 
             <div class="mb-3">
-              <label for="descripcion" class="form-label">Descripción</label>
+              <label for="horas" class="form-label">Horas</label>
               <input
-                id="descripcion"
-                formControlName="descripcion"
+                id="horas"
+                type="number"
+                formControlName="horas"
                 class="form-control form-control-lg"
-                placeholder="Ingrese la descripción del curso"
+                placeholder="Ingrese la cantidad de horas"
                 required
               />
             </div>
 
             <div class="mb-3">
-              <label for="duracion" class="form-label"
-                >Duración (en horas)</label
-              >
+              <label for="clases" class="form-label">Número de Clases</label>
               <input
-                id="duracion"
+                id="clases"
                 type="number"
-                formControlName="duracion"
+                formControlName="clases"
                 class="form-control form-control-lg"
-                placeholder="Ingrese la duración del curso"
+                placeholder="Ingrese el número de clases"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="profesor" class="form-label">Profesor</label>
+              <input
+                id="profesor"
+                formControlName="profesor"
+                class="form-control form-control-lg"
+                placeholder="Ingrese el nombre del profesor"
                 required
               />
             </div>

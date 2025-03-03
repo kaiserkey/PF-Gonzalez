@@ -8,18 +8,20 @@ import { CursosService, Curso } from '../../../../core/services/cursos.service';
   standalone: false,
 })
 export class ListaCursosComponent implements OnInit {
-  displayedColumns = ['nombre', 'descripcion', 'duracion', 'acciones'];
+  displayedColumns = ['nombre', 'horas', 'clases', 'profesor', 'acciones'];
   cursos: Curso[] = [];
 
   constructor(private cursosService: CursosService) {}
 
   ngOnInit() {
-    this.cursosService.cursos$.subscribe((cursos) => {
+    this.cursosService.obtenerCursos().subscribe((cursos) => {
       this.cursos = cursos;
     });
   }
 
-  eliminarCurso(id: number) {
-    this.cursosService.eliminarCurso(id);
+  eliminarCurso(id: string) {
+    this.cursosService.eliminarCurso(id).subscribe(() => {
+      this.cursos = this.cursos.filter((curso) => curso.id !== id);
+    });
   }
 }
