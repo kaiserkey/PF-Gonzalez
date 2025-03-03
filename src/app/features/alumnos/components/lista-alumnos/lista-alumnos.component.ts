@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import {
   AlumnosService,
   Alumno,
@@ -11,23 +12,22 @@ import {
   standalone: false,
 })
 export class ListaAlumnosComponent implements OnInit {
-  displayedColumns = ['nombre', 'edad', 'acciones'];
-  alumnos: Array<{
-    id: number;
-    nombre: string;
-    apellido: string;
-    edad: number;
-  }> = [];
+  displayedColumns = ['nombre', 'perfil', 'sexo', 'acciones'];
+  dataSource = new MatTableDataSource<Alumno>([]);
 
   constructor(private alumnosService: AlumnosService) {}
 
   ngOnInit() {
-    this.alumnosService.alumnos$.subscribe((alumnos) => {
-      this.alumnos = alumnos;
+    this.alumnosService.obtenerAlumnos().subscribe((alumnos) => {
+      this.dataSource.data = alumnos;
     });
   }
 
   eliminarAlumno(id: number) {
-    this.alumnosService.eliminarAlumno(id);
+    this.alumnosService.eliminarAlumno(id).subscribe(() => {
+      this.alumnosService.obtenerAlumnos().subscribe((alumnos) => {
+        this.dataSource.data = alumnos;
+      });
+    });
   }
 }

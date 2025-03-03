@@ -1,12 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   AlumnosService,
   Alumno,
 } from '../../../../core/services/alumnos.service';
-import { Subject } from 'rxjs';
-import { takeUntil, switchMap } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-abm-alumnos',
@@ -14,10 +13,9 @@ import { takeUntil, switchMap } from 'rxjs/operators';
   styleUrls: ['./abm-alumnos.component.css'],
   standalone: false,
 })
-export class AbmAlumnosComponent implements OnInit, OnDestroy {
+export class AbmAlumnosComponent implements OnInit {
   alumnoForm: FormGroup;
   alumnoId: number | null = null;
-  private unsubscribe$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
@@ -27,29 +25,24 @@ export class AbmAlumnosComponent implements OnInit, OnDestroy {
   ) {
     this.alumnoForm = this.fb.group({
       nombre: ['', Validators.required],
-      apellido: ['', Validators.required],
-      edad: ['', [Validators.required, Validators.min(18)]],
+      perfil: ['', Validators.required],
+      sexo: ['', Validators.required],
     });
   }
 
   ngOnInit() {
-    this.route.paramMap
-      .pipe(
-        takeUntil(this.unsubscribe$),
-        switchMap((params) => {
-          const id = params.get('id');
-          if (id) {
-            this.alumnoId = +id;
-            return this.alumnosService.obtenerAlumnoPorId(this.alumnoId);
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.alumnoId = +id;
+      this.alumnosService
+        .obtenerAlumnoPorId(this.alumnoId)
+        .pipe(take(1))
+        .subscribe((alumno) => {
+          if (alumno) {
+            this.alumnoForm.patchValue(alumno);
           }
-          return [];
-        })
-      )
-      .subscribe((alumno) => {
-        if (alumno) {
-          this.alumnoForm.patchValue(alumno);
-        }
-      });
+        });
+    }
   }
 
   guardarAlumno() {
@@ -57,19 +50,14 @@ export class AbmAlumnosComponent implements OnInit, OnDestroy {
       if (this.alumnoId) {
         this.alumnosService
           .actualizarAlumno(this.alumnoId, this.alumnoForm.value)
-          .pipe(takeUntil(this.unsubscribe$))
+          .pipe(take(1))
           .subscribe(() => this.router.navigate(['/alumnos/lista-alumnos']));
       } else {
         this.alumnosService
           .agregarAlumno(this.alumnoForm.value)
-          .pipe(takeUntil(this.unsubscribe$))
+          .pipe(take(1))
           .subscribe(() => this.router.navigate(['/alumnos/lista-alumnos']));
       }
     }
-  }
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 }

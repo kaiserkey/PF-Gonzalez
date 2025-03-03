@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ClasesService, Clase } from '../../../../core/services/clases.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-lista-clases',
@@ -9,17 +10,31 @@ import { ClasesService, Clase } from '../../../../core/services/clases.service';
 })
 export class ListaClasesComponent implements OnInit {
   displayedColumns = ['nombre', 'descripcion', 'horario', 'acciones'];
-  clases: Array<Clase> = [];
+  clases: Clase[] = [];
 
-  constructor(private clasesService: ClasesService) {}
+  constructor(private clasesService: ClasesService) {
+    console.log('ListaClasesComponent constructor');
+  }
 
   ngOnInit() {
-    this.clasesService.clases$.subscribe((clases) => {
-      this.clases = clases;
-    });
+    this.obtenerClases();
+  }
+
+  obtenerClases() {
+    this.clasesService
+      .obtenerClases()
+      .pipe(take(1))
+      .subscribe((clases) => {
+        this.clases = clases;
+      });
   }
 
   eliminarClase(id: number) {
-    this.clasesService.eliminarClase(id);
+    this.clasesService
+      .eliminarClase(id)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.obtenerClases();
+      });
   }
 }

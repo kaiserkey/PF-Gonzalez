@@ -9,31 +9,10 @@ import { map, catchError } from 'rxjs/operators';
 })
 export class AuthService {
   private apiUrl = 'http://localhost:3000/users';
-  private userSubject = new BehaviorSubject<any>(null);
+  private userSubject = new BehaviorSubject<any>(this.obtenerUsuarioLocal());
   user$ = this.userSubject.asObservable();
-  private isLoggedIn = false;
 
-  constructor(private http: HttpClient, private router: Router) {
-    const user = localStorage.getItem('user');
-    if (user) {
-      try {
-        const parsedUser = JSON.parse(user);
-        if (
-          parsedUser &&
-          parsedUser.id &&
-          parsedUser.email &&
-          parsedUser.role
-        ) {
-          this.userSubject.next(parsedUser);
-        } else {
-          this.clearUserData();
-        }
-      } catch (error) {
-        console.error('Error parsing user from localStorage', error);
-        this.clearUserData();
-      }
-    }
-  }
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(credentials: { email: string; password: string }): Observable<any> {
     return this.http.get<any[]>(this.apiUrl).pipe(
@@ -44,45 +23,44 @@ export class AuthService {
         );
         if (user) {
           const userData = { id: user.id, email: user.email, role: user.role };
-          this.saveUserData(userData);
-          this.isLoggedIn = true;
+          this.guardarUsuarioLocal(userData);
           return userData;
         } else {
           throw new Error('Credenciales incorrectas');
         }
       }),
       catchError((error) => {
-        console.error('Login failed:', error);
+        console.error('Login fallido:', error);
         throw new Error('Error al intentar iniciar sesión');
       })
     );
   }
 
-  private saveUserData(userData: any) {
-    try {
-      localStorage.setItem('user', JSON.stringify(userData));
-      this.userSubject.next(userData);
-    } catch (error) {
-      console.error('Error saving user data to localStorage', error);
-    }
-  }
-
   logout() {
-    this.clearUserData();
-    this.isLoggedIn = false;
+    this.eliminarUsuarioLocal();
     this.router.navigate(['/login']);
   }
 
-  private clearUserData() {
-    localStorage.removeItem('user');
-    this.userSubject.next(null);
-  }
-
   isAuthenticated(): boolean {
-    return this.isLoggedIn;
+    return !!this.obtenerUsuarioLocal();
   }
 
   get userRole(): string {
     return this.userSubject.value?.role || 'user';
+  }
+
+  private obtenerUsuarioLocal(): any {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  }
+
+  private guardarUsuarioLocal(userData: any) {
+    localStorage.setItem('user', JSON.stringify(userData));
+    this.userSubject.next(userData);
+  }
+
+  private eliminarUsuarioLocal() {
+    localStorage.removeItem('user');
+    this.userSubject.next(null);
   }
 }
