@@ -24,6 +24,7 @@ import {
 import { NombreApellidoPipe } from './pipes/nombre-apellido.pipe';
 import { HeaderSizeDirective } from './directives/header-size.directive';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   imports: [
@@ -44,6 +45,7 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
     MatRow,
     MatHeaderRow,
     MatTable,
+    MatMenuModule,
   ],
   exports: [
     MatToolbarModule,
@@ -65,6 +67,7 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
     NombreApellidoPipe,
     HeaderSizeDirective,
     ToolbarComponent,
+    MatMenuModule,
   ],
   declarations: [NombreApellidoPipe, HeaderSizeDirective, ToolbarComponent],
 })
