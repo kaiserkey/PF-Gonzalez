@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 @Injectable({
@@ -21,22 +21,21 @@ export class AuthService {
           (u) =>
             u.email === credentials.email && u.password === credentials.password
         );
-        if (user) {
-          const userData = { id: user.id, email: user.email, role: user.role };
-          this.guardarUsuarioLocal(userData);
-          return userData;
-        } else {
+        if (!user) {
           throw new Error('Credenciales incorrectas');
         }
+        const userData = { id: user.id, email: user.email, role: user.role };
+        this.guardarUsuarioLocal(userData);
+        return userData;
       }),
       catchError((error) => {
-        console.error('Login fallido:', error);
-        throw new Error('Error al intentar iniciar sesión');
+        console.error('Error en login:', error);
+        return throwError(() => new Error('Error al intentar iniciar sesión'));
       })
     );
   }
 
-  logout() {
+  logout(): void {
     this.eliminarUsuarioLocal();
     this.router.navigate(['/login']);
   }
@@ -49,17 +48,22 @@ export class AuthService {
     return this.userSubject.value?.role || 'user';
   }
 
-  private obtenerUsuarioLocal(): any {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
+  public obtenerUsuarioLocal(): any {
+    try {
+      const user = localStorage.getItem('user');
+      return user ? JSON.parse(user) : null;
+    } catch (error) {
+      console.error('Error al obtener usuario del localStorage', error);
+      return null;
+    }
   }
 
-  private guardarUsuarioLocal(userData: any) {
+  private guardarUsuarioLocal(userData: any): void {
     localStorage.setItem('user', JSON.stringify(userData));
     this.userSubject.next(userData);
   }
 
-  private eliminarUsuarioLocal() {
+  private eliminarUsuarioLocal(): void {
     localStorage.removeItem('user');
     this.userSubject.next(null);
   }

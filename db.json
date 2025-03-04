@@ -8,35 +8,41 @@
     },
     {
       "id": "2",
-      "email": "user@example.com",
-      "password": "user123",
-      "role": "user"
+      "email": "alumno1@example.com",
+      "password": "alumno123",
+      "role": "alumno"
+    },
+    {
+      "id": "3",
+      "email": "alumno2@example.com",
+      "password": "alumno456",
+      "role": "alumno"
+    },
+    {
+      "id": "4",
+      "email": "alumno3@example.com",
+      "password": "alumno789",
+      "role": "alumno"
     }
   ],
   "alumnos": [
     {
-      "id": "1",
+      "id": "2",
       "nombre": "Juan Pérez",
       "perfil": "desarrollador",
       "sexo": "M"
     },
     {
-      "id": "2",
+      "id": "3",
       "nombre": "María Gómez",
       "perfil": "IT",
       "sexo": "F"
     },
     {
-      "id": "3",
+      "id": "4",
       "nombre": "Carlos Ramírez",
       "perfil": "analista de datos",
       "sexo": "M"
-    },
-    {
-      "id": "4",
-      "nombre": "Laura Fernández",
-      "perfil": "diseñadora UX",
-      "sexo": "F"
     }
   ],
   "cursos": [
@@ -116,53 +122,39 @@
   ],
   "inscripciones": [
     {
-      "id": "1",
-      "idAlumno": 1,
-      "idCurso": 1,
-      "fecha": "2024-02-01",
-      "idUsuario": 2
-    },
-    {
       "id": "2",
-      "idAlumno": 2,
+      "idAlumno": 3,
       "idCurso": 2,
       "fecha": "2024-02-02",
-      "idUsuario": 2
+      "idUsuario": 3
     },
     {
       "id": "3",
-      "idAlumno": 3,
+      "idAlumno": 4,
       "idCurso": 3,
       "fecha": "2024-02-03",
-      "idUsuario": 1
-    },
-    {
-      "id": "4",
-      "idAlumno": 4,
-      "idCurso": 4,
-      "fecha": "2024-02-04",
-      "idUsuario": 2
+      "idUsuario": 4
     },
     {
       "id": "5",
-      "idAlumno": 5,
-      "idCurso": 5,
-      "fecha": "2024-02-05",
-      "idUsuario": 1
+      "idUsuario": "2",
+      "idAlumno": "2",
+      "idCurso": "1",
+      "fecha": "2025-03-04"
     },
     {
       "id": "6",
-      "idAlumno": 1,
-      "idCurso": 3,
-      "fecha": "2024-02-06",
-      "idUsuario": 2
+      "idUsuario": "2",
+      "idAlumno": "2",
+      "idCurso": "2",
+      "fecha": "2025-03-04"
     },
     {
       "id": "7",
-      "idAlumno": 2,
-      "idCurso": 4,
-      "fecha": "2024-02-07",
-      "idUsuario": 1
+      "idUsuario": "2",
+      "idAlumno": "2",
+      "idCurso": "4",
+      "fecha": "2025-03-04"
     }
   ]
 }

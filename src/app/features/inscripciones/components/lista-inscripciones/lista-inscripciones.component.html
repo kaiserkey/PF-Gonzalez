@@ -1,0 +1,73 @@
+<div class="container my-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white text-center">
+      <h2>Lista de Inscripciones</h2>
+    </div>
+    <div class="card-body">
+      <table
+        mat-table
+        [dataSource]="inscripciones"
+        class="mat-elevation-z8 w-100"
+      >
+        <!-- Columna Nombre -->
+        <ng-container matColumnDef="nombre">
+          <mat-header-cell *matHeaderCellDef class="fw-bold"
+            >Nombre</mat-header-cell
+          >
+          <mat-cell *matCellDef="let inscripcion">
+            <i class="bi bi-person-check me-2"></i> {{ inscripcion.nombre }}
+          </mat-cell>
+        </ng-container>
+
+        <!-- Columna Curso -->
+        <ng-container matColumnDef="curso">
+          <mat-header-cell *matHeaderCellDef class="fw-bold"
+            >Curso</mat-header-cell
+          >
+          <mat-cell *matCellDef="let inscripcion">
+            <i class="bi bi-book me-2"></i> {{ inscripcion.curso }}
+          </mat-cell>
+        </ng-container>
+
+        <!-- Columna Fecha Inscripción -->
+        <ng-container matColumnDef="fechaInscripcion">
+          <mat-header-cell *matHeaderCellDef class="fw-bold"
+            >Fecha Inscripción</mat-header-cell
+          >
+          <mat-cell *matCellDef="let inscripcion">
+            <i class="bi bi-calendar-check me-2"></i>
+            {{ inscripcion.fechaInscripcion | date : "dd/MM/yyyy" }}
+          </mat-cell>
+        </ng-container>
+
+        <!-- Columna Acciones -->
+        <ng-container matColumnDef="acciones">
+          <mat-header-cell *matHeaderCellDef class="fw-bold"
+            >Acciones</mat-header-cell
+          >
+          <mat-cell *matCellDef="let inscripcion">
+            <a
+              [routerLink]="[
+                '/inscripciones/abm-inscripciones',
+                inscripcion.id
+              ]"
+              class="btn btn-warning btn-sm me-2"
+            >
+              <i class="bi bi-pencil-fill"></i> Editar
+            </a>
+            <button
+              class="btn btn-danger btn-sm"
+              (click)="eliminarInscripcion(inscripcion.id)"
+            >
+              <i class="bi bi-trash-fill"></i> Eliminar
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Filas de la tabla -->
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </table>
+    </div>
+  </div>
+</div>

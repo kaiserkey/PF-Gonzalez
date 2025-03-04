@@ -33,6 +33,14 @@ const routes: Routes = [
       ),
     canActivate: [AuthGuard],
   },
+  {
+    path: 'inscripciones',
+    loadChildren: () =>
+      import('./features/inscripciones/modulos/inscripciones.module').then(
+        (m) => m.InscripcionesModule
+      ),
+    canActivate: [AuthGuard],
+  },
   { path: '**', redirectTo: '/login' },
 ];
 
