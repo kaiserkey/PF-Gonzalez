@@ -1,10 +1,11 @@
 <div class="container my-4">
   <div class="card shadow-sm">
     <div class="card-header bg-primary text-white text-center">
-      <h2 appHeaderSize>Lista de Clases</h2>
+      <h2>Lista de Clases</h2>
     </div>
     <div class="card-body">
       <table mat-table [dataSource]="clases" class="mat-elevation-z8">
+        <!-- Columna Nombre -->
         <ng-container matColumnDef="nombre">
           <mat-header-cell *matHeaderCellDef class="fw-bold"
             >Nombre</mat-header-cell
@@ -14,6 +15,7 @@
           </mat-cell>
         </ng-container>
 
+        <!-- Columna Descripción -->
         <ng-container matColumnDef="descripcion">
           <mat-header-cell *matHeaderCellDef class="fw-bold"
             >Descripción</mat-header-cell
@@ -23,6 +25,7 @@
           </mat-cell>
         </ng-container>
 
+        <!-- Columna Horario -->
         <ng-container matColumnDef="horario">
           <mat-header-cell *matHeaderCellDef class="fw-bold"
             >Horario</mat-header-cell
@@ -32,6 +35,7 @@
           </mat-cell>
         </ng-container>
 
+        <!-- Columna Acciones -->
         <ng-container matColumnDef="acciones">
           <mat-header-cell *matHeaderCellDef class="fw-bold"
             >Acciones</mat-header-cell
@@ -52,6 +56,7 @@
           </mat-cell>
         </ng-container>
 
+        <!-- Filas de la tabla -->
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
       </table>

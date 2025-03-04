@@ -5,10 +5,10 @@ import { map, catchError } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 export interface Inscripcion {
-  id: string;
-  idUsuario: string;
-  idAlumno: string;
-  idCurso: string;
+  id: number;
+  idUsuario: number;
+  idAlumno: number;
+  idCurso: number;
   fecha: string;
   nombre?: string; // nombre del alumno
   curso?: string; // nombre del curso
@@ -39,13 +39,13 @@ export class InscripcionesService {
       map(({ inscripciones, alumnos, cursos }) => {
         // Filtrar inscripciones del usuario actual
         const filtered = inscripciones.filter(
-          (inscripcion) => inscripcion.idUsuario == currentUser.id
+          (inscripcion) => inscripcion.idUsuario === currentUser.id
         );
 
         // Combinar datos de inscripciones, alumnos y cursos
         return filtered.map((inscripcion) => {
-          const alumno = alumnos.find((a) => a.id == inscripcion.idAlumno);
-          const curso = cursos.find((c) => c.id == inscripcion.idCurso);
+          const alumno = alumnos.find((a) => a.id === inscripcion.idAlumno);
+          const curso = cursos.find((c) => c.id === inscripcion.idCurso);
 
           return {
             ...inscripcion,
@@ -64,7 +64,7 @@ export class InscripcionesService {
     );
   }
 
-  obtenerInscripcionPorId(id: string): Observable<Inscripcion> {
+  obtenerInscripcionPorId(id: number): Observable<Inscripcion> {
     return this.http.get<Inscripcion>(`${this.apiUrl}/${id}`).pipe(
       catchError((error) => {
         console.error('Error al obtener inscripción:', error);
@@ -91,7 +91,7 @@ export class InscripcionesService {
   }
 
   actualizarInscripcion(
-    id: string,
+    id: number,
     inscripcion: Inscripcion
   ): Observable<Inscripcion> {
     return this.http.put<Inscripcion>(`${this.apiUrl}/${id}`, inscripcion).pipe(
@@ -104,7 +104,7 @@ export class InscripcionesService {
     );
   }
 
-  eliminarInscripcion(id: string): Observable<void> {
+  eliminarInscripcion(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
       catchError((error) => {
         console.error('Error al eliminar inscripción:', error);

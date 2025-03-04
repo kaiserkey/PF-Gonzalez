@@ -12,7 +12,7 @@ import { take } from 'rxjs/operators';
 })
 export class AbmCursosComponent implements OnInit {
   cursoForm: FormGroup;
-  cursoId: string | null = null;
+  cursoId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -31,7 +31,7 @@ export class AbmCursosComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.cursoId = id;
+      this.cursoId = +id;
       this.cursosService
         .obtenerCursoPorId(this.cursoId)
         .pipe(take(1))

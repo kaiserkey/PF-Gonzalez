@@ -12,9 +12,7 @@ export class ListaClasesComponent implements OnInit {
   displayedColumns = ['nombre', 'descripcion', 'horario', 'acciones'];
   clases: Clase[] = [];
 
-  constructor(private clasesService: ClasesService) {
-    console.log('ListaClasesComponent constructor');
-  }
+  constructor(private clasesService: ClasesService) {}
 
   ngOnInit() {
     this.obtenerClases();

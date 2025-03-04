@@ -7,8 +7,8 @@ import {
 } from '../../../../core/services/inscripciones.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { take } from 'rxjs/operators';
-import { CursosService } from '../../../../core/services/cursos.service'; // Servicio para obtener cursos
-import { AlumnosService } from '../../../../core/services/alumnos.service'; // Servicio para obtener alumnos
+import { CursosService } from '../../../../core/services/cursos.service';
+import { AlumnosService } from '../../../../core/services/alumnos.service';
 
 @Component({
   selector: 'app-abm-inscripciones',
@@ -18,10 +18,10 @@ import { AlumnosService } from '../../../../core/services/alumnos.service'; // S
 })
 export class AbmInscripcionesComponent implements OnInit {
   inscripcionForm: FormGroup;
-  inscripcionId: string | null = null;
+  inscripcionId: number | null = null;
   currentUser: any = null;
-  cursos: any[] = []; // Lista de cursos
-  alumnoNombre: string = ''; // Nombre del alumno
+  cursos: any[] = [];
+  alumnoNombre: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -33,18 +33,20 @@ export class AbmInscripcionesComponent implements OnInit {
     private router: Router
   ) {
     this.inscripcionForm = this.fb.group({
-      nombre: [{ value: '', disabled: true }, [Validators.required]], // Nombre deshabilitado
-      idCurso: ['', [Validators.required]], // ID del curso
-      fecha: [new Date().toISOString().split('T')[0], [Validators.required]], // Fecha actual por defecto
+      nombre: [{ value: '', disabled: true }, [Validators.required]],
+      idCurso: ['', [Validators.required]],
+      fecha: [new Date().toISOString().split('T')[0], [Validators.required]],
     });
 
     this.currentUser = this.authService.obtenerUsuarioLocal();
   }
 
   ngOnInit() {
-    this.inscripcionId = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.inscripcionId = +id;
+    }
 
-    // Cargar lista de cursos
     this.cursosService
       .obtenerCursos()
       .pipe(take(1))
@@ -57,7 +59,6 @@ export class AbmInscripcionesComponent implements OnInit {
         },
       });
 
-    // Cargar nombre del alumno si el rol es "alumno"
     if (this.currentUser?.role === 'alumno') {
       this.alumnosService
         .obtenerAlumnoPorId(this.currentUser.id)
@@ -73,7 +74,6 @@ export class AbmInscripcionesComponent implements OnInit {
         });
     }
 
-    // Cargar datos de la inscripción si estamos editando
     if (this.inscripcionId) {
       this.inscripcionesService
         .obtenerInscripcionPorId(this.inscripcionId)
@@ -98,56 +98,27 @@ export class AbmInscripcionesComponent implements OnInit {
   guardarInscripcion() {
     if (this.inscripcionForm.invalid) return;
 
-    // Obtener todas las inscripciones para generar un nuevo ID
-    this.inscripcionesService
-      .obtenerInscripciones()
-      .pipe(take(1))
-      .subscribe({
-        next: (inscripciones) => {
-          let inscripcionData: Inscripcion;
+    const inscripcionData: Inscripcion = {
+      id: this.inscripcionId || 0,
+      idUsuario: this.currentUser.id,
+      idAlumno: this.currentUser.id,
+      idCurso: this.inscripcionForm.value.idCurso,
+      fecha: this.inscripcionForm.value.fecha,
+    };
 
-          if (this.inscripcionId) {
-            // Editar inscripción existente
-            inscripcionData = {
-              id: this.inscripcionId, // Usar el ID existente
-              idUsuario: this.currentUser.id,
-              idAlumno: this.currentUser.id,
-              idCurso: this.inscripcionForm.value.idCurso,
-              fecha: this.inscripcionForm.value.fecha,
-            };
-
-            this.inscripcionesService
-              .actualizarInscripcion(this.inscripcionId, inscripcionData)
-              .subscribe(() =>
-                this.router.navigate(['/inscripciones/lista-inscripciones'])
-              );
-          } else {
-            // Crear nueva inscripción
-            const ultimoId = Math.max(
-              ...inscripciones.map((i) => Number(i.id)),
-              0
-            );
-            const nuevoId = (ultimoId + 1).toString(); // Incrementar el ID
-
-            inscripcionData = {
-              id: nuevoId, // Asignar el nuevo ID
-              idUsuario: this.currentUser.id,
-              idAlumno: this.currentUser.id,
-              idCurso: this.inscripcionForm.value.idCurso,
-              fecha: this.inscripcionForm.value.fecha,
-            };
-
-            this.inscripcionesService
-              .agregarInscripcion(inscripcionData)
-              .subscribe(() =>
-                this.router.navigate(['/inscripciones/lista-inscripciones'])
-              );
-          }
-        },
-        error: (error) => {
-          console.error('Error al obtener inscripciones:', error);
-        },
-      });
+    if (this.inscripcionId) {
+      this.inscripcionesService
+        .actualizarInscripcion(this.inscripcionId, inscripcionData)
+        .subscribe(() =>
+          this.router.navigate(['/inscripciones/lista-inscripciones'])
+        );
+    } else {
+      this.inscripcionesService
+        .agregarInscripcion(inscripcionData)
+        .subscribe(() =>
+          this.router.navigate(['/inscripciones/lista-inscripciones'])
+        );
+    }
   }
 
   volver() {

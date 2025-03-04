@@ -27,7 +27,6 @@ export class ListaInscripcionesComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: (inscripciones) => {
-          console.log('Inscripciones obtenidas:', inscripciones);
           this.inscripciones = inscripciones;
         },
         error: (error) => {
@@ -36,7 +35,7 @@ export class ListaInscripcionesComponent implements OnInit {
       });
   }
 
-  eliminarInscripcion(id: string) {
+  eliminarInscripcion(id: number) {
     if (confirm('¿Estás seguro de que deseas eliminar esta inscripción?')) {
       this.inscripcionesService
         .eliminarInscripcion(id)

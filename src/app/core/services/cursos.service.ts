@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Curso {
-  id: string;
+  id: number; // Cambiado de string a number
   nombre: string;
   horas: number;
   clases: number;
@@ -22,7 +22,7 @@ export class CursosService {
     return this.http.get<Curso[]>(this.apiUrl);
   }
 
-  obtenerCursoPorId(id: string): Observable<Curso> {
+  obtenerCursoPorId(id: number): Observable<Curso> {
     return this.http.get<Curso>(`${this.apiUrl}/${id}`);
   }
 
@@ -30,11 +30,11 @@ export class CursosService {
     return this.http.post<Curso>(this.apiUrl, curso);
   }
 
-  actualizarCurso(id: string, datos: Omit<Curso, 'id'>): Observable<Curso> {
+  actualizarCurso(id: number, datos: Omit<Curso, 'id'>): Observable<Curso> {
     return this.http.put<Curso>(`${this.apiUrl}/${id}`, datos);
   }
 
-  eliminarCurso(id: string): Observable<void> {
+  eliminarCurso(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

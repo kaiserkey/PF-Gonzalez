@@ -19,7 +19,7 @@ export class ListaCursosComponent implements OnInit {
     });
   }
 
-  eliminarCurso(id: string) {
+  eliminarCurso(id: number) {
     this.cursosService.eliminarCurso(id).subscribe(() => {
       this.cursos = this.cursos.filter((curso) => curso.id !== id);
     });
