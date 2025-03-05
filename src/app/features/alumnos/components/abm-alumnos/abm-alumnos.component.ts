@@ -5,6 +5,7 @@ import {
   AlumnosService,
   Alumno,
 } from '../../../../core/services/alumnos.service';
+import { AuthService } from '../../../../core/services/auth.service'; // Importar AuthService
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -16,10 +17,12 @@ import { take } from 'rxjs/operators';
 export class AbmAlumnosComponent implements OnInit {
   alumnoForm: FormGroup;
   alumnoId: number | null = null;
+  isAdmin: boolean = false; // Variable para verificar si es admin
 
   constructor(
     private fb: FormBuilder,
     private alumnosService: AlumnosService,
+    private authService: AuthService, // Inyectar AuthService
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -31,6 +34,12 @@ export class AbmAlumnosComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isAdmin = this.authService.userRole === 'admin'; // Verificar si es admin
+    if (!this.isAdmin) {
+      this.router.navigate(['/alumnos/lista-alumnos']); // Redirigir si no es admin
+      return;
+    }
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.alumnoId = +id;
@@ -46,7 +55,8 @@ export class AbmAlumnosComponent implements OnInit {
   }
 
   guardarAlumno() {
-    if (this.alumnoForm.valid) {
+    if (this.alumnoForm.valid && this.isAdmin) {
+      // Solo permitir guardar si es admin
       if (this.alumnoId) {
         this.alumnosService
           .actualizarAlumno(this.alumnoId, this.alumnoForm.value)

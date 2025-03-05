@@ -24,8 +24,16 @@ export class AuthService {
         if (!user) {
           throw new Error('Credenciales incorrectas');
         }
-        const userData = { id: user.id, email: user.email, role: user.role };
+
+        const userData = {
+          id: user.id,
+          email: user.email,
+          role: user.role,
+          name: user.nombre,
+        };
+
         this.guardarUsuarioLocal(userData);
+        this.userSubject.next(userData); // Actualizar el BehaviorSubject
         return userData;
       }),
       catchError((error) => {
@@ -37,6 +45,7 @@ export class AuthService {
 
   logout(): void {
     this.eliminarUsuarioLocal();
+    this.userSubject.next(null); // Limpiar el BehaviorSubject
     this.router.navigate(['/login']);
   }
 
@@ -60,11 +69,11 @@ export class AuthService {
 
   private guardarUsuarioLocal(userData: any): void {
     localStorage.setItem('user', JSON.stringify(userData));
-    this.userSubject.next(userData);
+    this.userSubject.next(userData); // Actualizar el BehaviorSubject
   }
 
   private eliminarUsuarioLocal(): void {
     localStorage.removeItem('user');
-    this.userSubject.next(null);
+    this.userSubject.next(null); // Limpiar el BehaviorSubject
   }
 }

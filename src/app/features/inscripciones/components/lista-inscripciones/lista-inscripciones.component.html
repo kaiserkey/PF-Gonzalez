@@ -4,12 +4,8 @@
       <h2>Lista de Inscripciones</h2>
     </div>
     <div class="card-body">
-      <table
-        mat-table
-        [dataSource]="inscripciones"
-        class="mat-elevation-z8 w-100"
-      >
-        <!-- Columna Nombre -->
+      <table mat-table [dataSource]="inscripciones" class="mat-elevation-z8">
+        <!-- Columnas existentes -->
         <ng-container matColumnDef="nombre">
           <mat-header-cell *matHeaderCellDef class="fw-bold"
             >Nombre</mat-header-cell
@@ -19,7 +15,6 @@
           </mat-cell>
         </ng-container>
 
-        <!-- Columna Curso -->
         <ng-container matColumnDef="curso">
           <mat-header-cell *matHeaderCellDef class="fw-bold"
             >Curso</mat-header-cell
@@ -29,7 +24,6 @@
           </mat-cell>
         </ng-container>
 
-        <!-- Columna Fecha Inscripción -->
         <ng-container matColumnDef="fechaInscripcion">
           <mat-header-cell *matHeaderCellDef class="fw-bold"
             >Fecha Inscripción</mat-header-cell
@@ -40,8 +34,8 @@
           </mat-cell>
         </ng-container>
 
-        <!-- Columna Acciones -->
-        <ng-container matColumnDef="acciones">
+        <!-- Columna de acciones (solo para admin) -->
+        <ng-container matColumnDef="acciones" *ngIf="isAdmin">
           <mat-header-cell *matHeaderCellDef class="fw-bold"
             >Acciones</mat-header-cell
           >

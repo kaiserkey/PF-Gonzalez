@@ -5,7 +5,7 @@
     </div>
     <div class="card-body">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-        <!-- Columna Nombre -->
+        <!-- Columnas existentes -->
         <ng-container matColumnDef="nombre">
           <mat-header-cell *matHeaderCellDef class="fw-bold"
             >Nombre</mat-header-cell
@@ -15,7 +15,6 @@
           </mat-cell>
         </ng-container>
 
-        <!-- Columna Perfil -->
         <ng-container matColumnDef="perfil">
           <mat-header-cell *matHeaderCellDef class="fw-bold"
             >Perfil</mat-header-cell
@@ -25,7 +24,6 @@
           </mat-cell>
         </ng-container>
 
-        <!-- Columna Sexo -->
         <ng-container matColumnDef="sexo">
           <mat-header-cell *matHeaderCellDef class="fw-bold"
             >Sexo</mat-header-cell
@@ -35,8 +33,8 @@
           </mat-cell>
         </ng-container>
 
-        <!-- Columna Acciones -->
-        <ng-container matColumnDef="acciones">
+        <!-- Columna de acciones (solo para admin) -->
+        <ng-container matColumnDef="acciones" *ngIf="isAdmin">
           <mat-header-cell *matHeaderCellDef class="fw-bold"
             >Acciones</mat-header-cell
           >

@@ -167,6 +167,13 @@
       "idCurso": "5",
       "fecha": "2024-02-05",
       "idUsuario": "3"
+    },
+    {
+      "id": "6",
+      "idUsuario": "2",
+      "idAlumno": "2",
+      "idCurso": "5",
+      "fecha": "2025-03-05"
     }
   ]
 }

@@ -5,7 +5,7 @@ import {
   InscripcionesService,
   Inscripcion,
 } from '../../../../core/services/inscripciones.service';
-import { AuthService } from '../../../../core/services/auth.service';
+import { AuthService } from '../../../../core/services/auth.service'; // Importar AuthService
 import { take } from 'rxjs/operators';
 import { CursosService } from '../../../../core/services/cursos.service';
 import { AlumnosService } from '../../../../core/services/alumnos.service';
@@ -22,11 +22,12 @@ export class AbmInscripcionesComponent implements OnInit {
   currentUser: any = null;
   cursos: any[] = [];
   alumnoNombre: string = '';
+  isAdmin: boolean = false; // Variable para verificar si es admin
 
   constructor(
     private fb: FormBuilder,
     private inscripcionesService: InscripcionesService,
-    private authService: AuthService,
+    private authService: AuthService, // Inyectar AuthService
     private cursosService: CursosService,
     private alumnosService: AlumnosService,
     private route: ActivatedRoute,
@@ -39,9 +40,17 @@ export class AbmInscripcionesComponent implements OnInit {
     });
 
     this.currentUser = this.authService.obtenerUsuarioLocal();
+    this.isAdmin =
+      this.authService.userRole == 'admin' ||
+      this.authService.userRole == 'alumno'; // Verificar si es admin
   }
 
   ngOnInit() {
+    if (!this.isAdmin) {
+      this.router.navigate(['/inscripciones/lista-inscripciones']); // Redirigir si no es admin
+      return;
+    }
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.inscripcionId = +id;
@@ -96,7 +105,7 @@ export class AbmInscripcionesComponent implements OnInit {
   }
 
   guardarInscripcion() {
-    if (this.inscripcionForm.invalid) return;
+    if (this.inscripcionForm.invalid || !this.isAdmin) return; // Solo permitir guardar si es admin
 
     const inscripcionData: Inscripcion = {
       id: this.inscripcionId || 0,

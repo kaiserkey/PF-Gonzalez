@@ -6,22 +6,16 @@
     </div>
     <mat-nav-list>
       <!-- Menú de Alumnos -->
-      <a
-        mat-list-item
-        routerLink="/alumnos/lista-alumnos"
-        routerLinkActive="active-link"
-        class="menu-item d-flex align-items-center"
-      >
-        <i class="bi bi-list-ul me-2"></i> Lista de Alumnos
-      </a>
-      <a
-        mat-list-item
-        routerLink="/alumnos/abm-alumnos"
-        routerLinkActive="active-link"
-        class="menu-item d-flex align-items-center"
-      >
-        <i class="bi bi-person-plus me-2"></i> ABM Alumnos
-      </a>
+      <ng-container *ngIf="userRole === 'admin'">
+        <a
+          mat-list-item
+          routerLink="/alumnos/lista-alumnos"
+          routerLinkActive="active-link"
+          class="menu-item d-flex align-items-center"
+        >
+          <i class="bi bi-list-ul me-2"></i> Lista de Alumnos
+        </a>
+      </ng-container>
 
       <!-- Menú de Cursos -->
       <a
@@ -32,32 +26,6 @@
       >
         <i class="bi bi-list-ul me-2"></i> Lista de Cursos
       </a>
-      <a
-        mat-list-item
-        routerLink="/cursos/abm-cursos"
-        routerLinkActive="active-link"
-        class="menu-item d-flex align-items-center"
-      >
-        <i class="bi bi-plus-circle me-2"></i> ABM Cursos
-      </a>
-
-      <!-- Menú de Clases -->
-      <a
-        mat-list-item
-        routerLink="/clases/lista-clases"
-        routerLinkActive="active-link"
-        class="menu-item d-flex align-items-center"
-      >
-        <i class="bi bi-list-ul me-2"></i> Lista de Clases
-      </a>
-      <a
-        mat-list-item
-        routerLink="/clases/abm-clases"
-        routerLinkActive="active-link"
-        class="menu-item d-flex align-items-center"
-      >
-        <i class="bi bi-plus-circle me-2"></i> ABM Clases
-      </a>
 
       <!-- Menú de Inscripciones -->
       <a
@@ -67,14 +35,6 @@
         class="menu-item d-flex align-items-center"
       >
         <i class="bi bi-list-ul me-2"></i> Lista de Inscripciones
-      </a>
-      <a
-        mat-list-item
-        routerLink="/inscripciones/abm-inscripciones"
-        routerLinkActive="active-link"
-        class="menu-item d-flex align-items-center"
-      >
-        <i class="bi bi-plus-circle me-2"></i> ABM Inscripciones
       </a>
 
       <!-- Menú de Usuarios (solo para admin) -->
@@ -88,6 +48,46 @@
           <i class="bi bi-people me-2"></i> Lista de Usuarios
         </a>
       </ng-container>
+
+      <!-- Menú de ABM (solo para admin) -->
+      <ng-container *ngIf="userRole === 'admin'">
+        <a
+          mat-list-item
+          routerLink="/alumnos/abm-alumnos"
+          routerLinkActive="active-link"
+          class="menu-item d-flex align-items-center"
+        >
+          <i class="bi bi-person-plus me-2"></i> ABM Alumnos
+        </a>
+        <a
+          mat-list-item
+          routerLink="/cursos/abm-cursos"
+          routerLinkActive="active-link"
+          class="menu-item d-flex align-items-center"
+        >
+          <i class="bi bi-plus-circle me-2"></i> ABM Cursos
+        </a>
+        <a
+          mat-list-item
+          routerLink="/clases/abm-clases"
+          routerLinkActive="active-link"
+          class="menu-item d-flex align-items-center"
+        >
+          <i class="bi bi-plus-circle me-2"></i> ABM Clases
+        </a>
+      </ng-container>
+
+      <!-- Menú de ABM Inscripciones (solo para admin) -->
+      <ng-container *ngIf="userRole == 'admin' || userRole == 'alumno'">
+        <a
+          mat-list-item
+          routerLink="/inscripciones/abm-inscripciones"
+          routerLinkActive="active-link"
+          class="menu-item d-flex align-items-center"
+        >
+          <i class="bi bi-plus-circle me-2"></i> ABM Inscripciones
+        </a>
+      </ng-container>
     </mat-nav-list>
   </mat-sidenav>
 
@@ -99,7 +99,7 @@
 
       <!-- Menú desplegable del usuario -->
       <div class="d-flex align-items-center">
-        <span *ngIf="userEmail" class="me-2">{{ userEmail }}</span>
+        <span *ngIf="userName" class="me-2">{{ userName }}</span>
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <i class="bi bi-person-circle text-black fs-5"></i>
         </button>
