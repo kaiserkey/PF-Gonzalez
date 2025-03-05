@@ -76,6 +76,18 @@
       >
         <i class="bi bi-plus-circle me-2"></i> ABM Inscripciones
       </a>
+
+      <!-- Menú de Usuarios (solo para admin) -->
+      <ng-container *ngIf="userRole === 'admin'">
+        <a
+          mat-list-item
+          routerLink="/usuarios/lista-usuarios"
+          routerLinkActive="active-link"
+          class="menu-item d-flex align-items-center"
+        >
+          <i class="bi bi-people me-2"></i> Lista de Usuarios
+        </a>
+      </ng-container>
     </mat-nav-list>
   </mat-sidenav>
 

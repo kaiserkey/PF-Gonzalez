@@ -10,12 +10,14 @@ import { Router } from '@angular/router';
 })
 export class LayoutComponent implements OnInit {
   userEmail: string | null = null;
+  userRole: string | null = null;
 
   constructor(public authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.authService.user$.subscribe((user) => {
       this.userEmail = user?.email || null;
+      this.userRole = user?.role || null;
     });
   }
 

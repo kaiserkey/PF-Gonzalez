@@ -41,6 +41,13 @@ const routes: Routes = [
       ),
     canActivate: [AuthGuard],
   },
+  {
+    path: 'usuarios',
+    loadChildren: () =>
+      import('./features/usuarios/components/usuarios.module').then(
+        (m) => m.UsuariosModule
+      ),
+  },
   { path: '**', redirectTo: '/login' },
 ];
 
