@@ -8,7 +8,7 @@ import { map, catchError } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/users';
+  private apiUrl = 'http://localhost:3000/usuarios';
   private userSubject = new BehaviorSubject<any>(this.obtenerUsuarioLocal());
   user$ = this.userSubject.asObservable();
 
@@ -16,11 +16,12 @@ export class AuthService {
 
   login(credentials: { email: string; password: string }): Observable<any> {
     return this.http.get<any[]>(this.apiUrl).pipe(
-      map((users) => {
-        const user = users.find(
+      map((usuarios) => {
+        const user = usuarios.find(
           (u) =>
             u.email === credentials.email && u.password === credentials.password
         );
+
         if (!user) {
           throw new Error('Credenciales incorrectas');
         }
@@ -28,12 +29,12 @@ export class AuthService {
         const userData = {
           id: user.id,
           email: user.email,
-          role: user.role,
-          name: user.nombre,
+          perfil: user.perfil, // Se cambió "role" por "perfil"
+          nombre: user.nombre, // Se mantiene el nombre
         };
 
         this.guardarUsuarioLocal(userData);
-        this.userSubject.next(userData); // Actualizar el BehaviorSubject
+        this.userSubject.next(userData);
         return userData;
       }),
       catchError((error) => {
@@ -45,7 +46,7 @@ export class AuthService {
 
   logout(): void {
     this.eliminarUsuarioLocal();
-    this.userSubject.next(null); // Limpiar el BehaviorSubject
+    this.userSubject.next(null);
     this.router.navigate(['/login']);
   }
 
@@ -53,11 +54,11 @@ export class AuthService {
     return !!this.obtenerUsuarioLocal();
   }
 
-  get userRole(): string {
-    return this.userSubject.value?.role || 'user';
+  get userPerfil(): string {
+    return this.userSubject.value?.perfil || 'usuario'; // Se cambió "role" por "perfil"
   }
 
-  public obtenerUsuarioLocal(): any {
+  private obtenerUsuarioLocal(): any {
     try {
       const user = localStorage.getItem('user');
       return user ? JSON.parse(user) : null;
@@ -69,11 +70,11 @@ export class AuthService {
 
   private guardarUsuarioLocal(userData: any): void {
     localStorage.setItem('user', JSON.stringify(userData));
-    this.userSubject.next(userData); // Actualizar el BehaviorSubject
+    this.userSubject.next(userData);
   }
 
   private eliminarUsuarioLocal(): void {
     localStorage.removeItem('user');
-    this.userSubject.next(null); // Limpiar el BehaviorSubject
+    this.userSubject.next(null);
   }
 }

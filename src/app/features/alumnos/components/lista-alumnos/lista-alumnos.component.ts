@@ -23,7 +23,7 @@ export class ListaAlumnosComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.isAdmin = this.authService.userRole === 'admin'; // Verificar si es admin
+    this.isAdmin = this.authService.userPerfil === 'admin'; // Verificar si es admin
     if (this.isAdmin) {
       this.displayedColumns.push('acciones'); // Agregar columna de acciones solo para admin
     }

@@ -33,8 +33,8 @@ export class AbmCursosComponent implements OnInit {
 
   ngOnInit() {
     this.isAdmin =
-      this.authService.userRole === 'admin' ||
-      this.authService.userRole === 'alumno'; // Verificar si es admin
+      this.authService.userPerfil === 'admin' ||
+      this.authService.userPerfil === 'usuario'; // Verificar si es admin
     if (!this.isAdmin) {
       this.router.navigate(['/cursos/lista-cursos']); // Redirigir si no es admin
       return;

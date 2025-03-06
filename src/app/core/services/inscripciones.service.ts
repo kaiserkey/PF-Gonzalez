@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError, forkJoin } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { AuthService } from './auth.service';
 
 export interface Inscripcion {
   id: number;
@@ -10,9 +9,9 @@ export interface Inscripcion {
   idAlumno: number;
   idCurso: number;
   fecha: string;
-  nombre?: string; // nombre del alumno
-  curso?: string; // nombre del curso
-  fechaInscripcion?: string; //fecha formateada
+  nombre?: string; // Nombre del alumno
+  curso?: string; // Nombre del curso
+  fechaInscripcion?: string; // Fecha formateada
 }
 
 @Injectable({
@@ -23,27 +22,16 @@ export class InscripcionesService {
   private alumnosUrl = 'http://localhost:3000/alumnos';
   private cursosUrl = 'http://localhost:3000/cursos';
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient) {}
 
   obtenerInscripciones(): Observable<Inscripcion[]> {
-    const currentUser = this.authService.obtenerUsuarioLocal();
-    if (!currentUser || !currentUser.id) {
-      return throwError(() => new Error('Usuario no autenticado'));
-    }
-
     return forkJoin({
       inscripciones: this.http.get<Inscripcion[]>(this.apiUrl),
       alumnos: this.http.get<any[]>(this.alumnosUrl),
       cursos: this.http.get<any[]>(this.cursosUrl),
     }).pipe(
       map(({ inscripciones, alumnos, cursos }) => {
-        // Filtrar inscripciones del usuario actual
-        const filtered = inscripciones.filter(
-          (inscripcion) => inscripcion.idUsuario === currentUser.id
-        );
-
-        // Combinar datos de inscripciones, alumnos y cursos
-        return filtered.map((inscripcion) => {
+        return inscripciones.map((inscripcion) => {
           const alumno = alumnos.find((a) => a.id === inscripcion.idAlumno);
           const curso = cursos.find((c) => c.id === inscripcion.idCurso);
 
@@ -76,13 +64,7 @@ export class InscripcionesService {
   agregarInscripcion(
     inscripcion: Omit<Inscripcion, 'id'>
   ): Observable<Inscripcion> {
-    const currentUser = this.authService.obtenerUsuarioLocal();
-    if (!currentUser || !currentUser.id) {
-      return throwError(() => new Error('Usuario no autenticado'));
-    }
-
-    const nuevaInscripcion = { ...inscripcion, idUsuario: currentUser.id };
-    return this.http.post<Inscripcion>(this.apiUrl, nuevaInscripcion).pipe(
+    return this.http.post<Inscripcion>(this.apiUrl, inscripcion).pipe(
       catchError((error) => {
         console.error('Error al agregar inscripción:', error);
         return throwError(() => new Error('No se pudo agregar la inscripción'));

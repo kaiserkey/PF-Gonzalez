@@ -19,85 +19,50 @@ import { AlumnosService } from '../../../../core/services/alumnos.service';
 export class AbmInscripcionesComponent implements OnInit {
   inscripcionForm: FormGroup;
   inscripcionId: number | null = null;
-  currentUser: any = null;
+  alumnos: any[] = []; // Lista de alumnos disponibles
   cursos: any[] = [];
-  alumnoNombre: string = '';
-  isAdmin: boolean = false; // Variable para verificar si es admin
 
   constructor(
     private fb: FormBuilder,
     private inscripcionesService: InscripcionesService,
-    private authService: AuthService, // Inyectar AuthService
     private cursosService: CursosService,
     private alumnosService: AlumnosService,
     private route: ActivatedRoute,
     private router: Router
   ) {
     this.inscripcionForm = this.fb.group({
-      nombre: [{ value: '', disabled: true }, [Validators.required]],
-      idCurso: ['', [Validators.required]],
-      fecha: [new Date().toISOString().split('T')[0], [Validators.required]],
+      idAlumno: ['', Validators.required], // Ahora seleccionable
+      idCurso: ['', Validators.required],
+      fecha: [new Date().toISOString().split('T')[0], Validators.required],
     });
-
-    this.currentUser = this.authService.obtenerUsuarioLocal();
-    this.isAdmin =
-      this.authService.userRole == 'admin' ||
-      this.authService.userRole == 'alumno'; // Verificar si es admin
   }
 
   ngOnInit() {
-    if (!this.isAdmin) {
-      this.router.navigate(['/inscripciones/lista-inscripciones']); // Redirigir si no es admin
-      return;
-    }
+    this.cargarDatos();
+  }
+
+  volver() {
+    this.router.navigate(['/inscripciones/lista-inscripciones']);
+  }
+
+  cargarDatos() {
+    this.cursosService.obtenerCursos().subscribe({
+      next: (cursos) => (this.cursos = cursos),
+      error: (error) => console.error('Error al obtener cursos:', error),
+    });
+
+    this.alumnosService.obtenerAlumnos().subscribe({
+      next: (alumnos) => (this.alumnos = alumnos),
+      error: (error) => console.error('Error al obtener alumnos:', error),
+    });
 
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.inscripcionId = +id;
-    }
-
-    this.cursosService
-      .obtenerCursos()
-      .pipe(take(1))
-      .subscribe({
-        next: (cursos) => {
-          this.cursos = cursos;
-        },
-        error: (error) => {
-          console.error('Error al obtener cursos:', error);
-        },
-      });
-
-    if (this.currentUser?.role === 'alumno') {
-      this.alumnosService
-        .obtenerAlumnoPorId(this.currentUser.id)
-        .pipe(take(1))
-        .subscribe({
-          next: (alumno) => {
-            this.alumnoNombre = alumno.nombre;
-            this.inscripcionForm.patchValue({ nombre: alumno.nombre });
-          },
-          error: (error) => {
-            console.error('Error al obtener alumno:', error);
-          },
-        });
-    }
-
-    if (this.inscripcionId) {
       this.inscripcionesService
         .obtenerInscripcionPorId(this.inscripcionId)
-        .pipe(take(1))
         .subscribe({
-          next: (inscripcion) => {
-            if (inscripcion?.idUsuario === this.currentUser?.id) {
-              this.inscripcionForm.patchValue({
-                idCurso: inscripcion.idCurso,
-                fecha: inscripcion.fecha,
-              });
-            } else {
-              this.router.navigate(['/inscripciones/lista-inscripciones']);
-            }
-          },
+          next: (inscripcion) => this.inscripcionForm.patchValue(inscripcion),
           error: () =>
             this.router.navigate(['/inscripciones/lista-inscripciones']),
         });
@@ -105,19 +70,16 @@ export class AbmInscripcionesComponent implements OnInit {
   }
 
   guardarInscripcion() {
-    if (this.inscripcionForm.invalid || !this.isAdmin) return; // Solo permitir guardar si es admin
+    if (this.inscripcionForm.invalid) return;
 
-    const inscripcionData: Inscripcion = {
-      id: this.inscripcionId || 0,
-      idUsuario: this.currentUser.id,
-      idAlumno: this.currentUser.id,
-      idCurso: this.inscripcionForm.value.idCurso,
-      fecha: this.inscripcionForm.value.fecha,
-    };
+    const inscripcionData: Omit<Inscripcion, 'id'> = this.inscripcionForm.value;
 
     if (this.inscripcionId) {
       this.inscripcionesService
-        .actualizarInscripcion(this.inscripcionId, inscripcionData)
+        .actualizarInscripcion(this.inscripcionId, {
+          id: this.inscripcionId,
+          ...inscripcionData,
+        })
         .subscribe(() =>
           this.router.navigate(['/inscripciones/lista-inscripciones'])
         );
@@ -128,9 +90,5 @@ export class AbmInscripcionesComponent implements OnInit {
           this.router.navigate(['/inscripciones/lista-inscripciones'])
         );
     }
-  }
-
-  volver() {
-    this.router.navigate(['/inscripciones/lista-inscripciones']);
   }
 }

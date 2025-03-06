@@ -34,7 +34,7 @@ export class AbmAlumnosComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isAdmin = this.authService.userRole === 'admin'; // Verificar si es admin
+    this.isAdmin = this.authService.userPerfil === 'admin'; // Verificar si es admin
     if (!this.isAdmin) {
       this.router.navigate(['/alumnos/lista-alumnos']); // Redirigir si no es admin
       return;
