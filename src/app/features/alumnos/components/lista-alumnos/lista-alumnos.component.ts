@@ -4,7 +4,7 @@ import {
   AlumnosService,
   Alumno,
 } from '../../../../core/services/alumnos.service';
-import { AuthService } from '../../../../core/services/auth.service'; // Importar AuthService
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-lista-alumnos',
@@ -13,19 +13,19 @@ import { AuthService } from '../../../../core/services/auth.service'; // Importa
   standalone: false,
 })
 export class ListaAlumnosComponent implements OnInit {
-  displayedColumns = ['nombre', 'perfil', 'sexo']; // Columnas iniciales
+  displayedColumns = ['nombre', 'perfil', 'sexo'];
   dataSource = new MatTableDataSource<Alumno>([]);
-  isAdmin: boolean = false; // Variable para verificar si es admin
+  isAdmin: boolean = false;
 
   constructor(
     private alumnosService: AlumnosService,
-    private authService: AuthService // Inyectar AuthService
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
-    this.isAdmin = this.authService.userPerfil === 'admin'; // Verificar si es admin
+    this.isAdmin = this.authService.userPerfil === 'admin';
     if (this.isAdmin) {
-      this.displayedColumns.push('acciones'); // Agregar columna de acciones solo para admin
+      this.displayedColumns.push('acciones');
     }
     this.cargarAlumnos();
   }
@@ -39,10 +39,9 @@ export class ListaAlumnosComponent implements OnInit {
 
   eliminarAlumno(id: number) {
     if (this.isAdmin) {
-      // Solo permitir eliminar si es admin
-      this.alumnosService.eliminarAlumno(id).subscribe(() => {
-        this.cargarAlumnos();
-      });
+      this.alumnosService
+        .eliminarAlumno(id)
+        .subscribe(() => this.cargarAlumnos());
     }
   }
 }

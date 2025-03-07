@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  AlumnosService,
-  Alumno,
-} from '../../../../core/services/alumnos.service';
-import { AuthService } from '../../../../core/services/auth.service'; // Importar AuthService
+import { AlumnosService } from '../../../../core/services/alumnos.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -17,12 +14,12 @@ import { take } from 'rxjs/operators';
 export class AbmAlumnosComponent implements OnInit {
   alumnoForm: FormGroup;
   alumnoId: number | null = null;
-  isAdmin: boolean = false; // Variable para verificar si es admin
+  isAdmin: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private alumnosService: AlumnosService,
-    private authService: AuthService, // Inyectar AuthService
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -34,9 +31,9 @@ export class AbmAlumnosComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isAdmin = this.authService.userPerfil === 'admin'; // Verificar si es admin
+    this.isAdmin = this.authService.userPerfil === 'admin';
     if (!this.isAdmin) {
-      this.router.navigate(['/alumnos/lista-alumnos']); // Redirigir si no es admin
+      this.router.navigate(['/alumnos/lista-alumnos']);
       return;
     }
 
@@ -56,18 +53,16 @@ export class AbmAlumnosComponent implements OnInit {
 
   guardarAlumno() {
     if (this.alumnoForm.valid && this.isAdmin) {
-      // Solo permitir guardar si es admin
-      if (this.alumnoId) {
-        this.alumnosService
-          .actualizarAlumno(this.alumnoId, this.alumnoForm.value)
-          .pipe(take(1))
-          .subscribe(() => this.router.navigate(['/alumnos/lista-alumnos']));
-      } else {
-        this.alumnosService
-          .agregarAlumno(this.alumnoForm.value)
-          .pipe(take(1))
-          .subscribe(() => this.router.navigate(['/alumnos/lista-alumnos']));
-      }
+      const action = this.alumnoId
+        ? this.alumnosService.actualizarAlumno(
+            this.alumnoId,
+            this.alumnoForm.value
+          )
+        : this.alumnosService.agregarAlumno(this.alumnoForm.value);
+
+      action
+        .pipe(take(1))
+        .subscribe(() => this.router.navigate(['/alumnos/lista-alumnos']));
     }
   }
 }

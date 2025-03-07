@@ -21,7 +21,7 @@ export class ListaUsuariosComponent implements OnInit {
     this.cargarUsuarios();
   }
 
-  cargarUsuarios(): void {
+  cargarUsuarios() {
     this.usuariosService.obtenerUsuarios().subscribe({
       next: (usuarios) => (this.dataSource.data = usuarios),
       error: (error) => console.error('Error al cargar usuarios:', error),

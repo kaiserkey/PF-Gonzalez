@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CursosService, Curso } from '../../../../core/services/cursos.service';
-import { AuthService } from '../../../../core/services/auth.service'; // Importar AuthService
+import { CursosService } from '../../../../core/services/cursos.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -14,12 +14,12 @@ import { take } from 'rxjs/operators';
 export class AbmCursosComponent implements OnInit {
   cursoForm: FormGroup;
   cursoId: number | null = null;
-  isAdmin: boolean = false; // Variable para verificar si es admin
+  isAdmin: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private cursosService: CursosService,
-    private authService: AuthService, // Inyectar AuthService
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -32,11 +32,9 @@ export class AbmCursosComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isAdmin =
-      this.authService.userPerfil === 'admin' ||
-      this.authService.userPerfil === 'usuario'; // Verificar si es admin
+    this.isAdmin = this.authService.userPerfil === 'admin';
     if (!this.isAdmin) {
-      this.router.navigate(['/cursos/lista-cursos']); // Redirigir si no es admin
+      this.router.navigate(['/cursos/lista-cursos']);
       return;
     }
 
@@ -56,18 +54,13 @@ export class AbmCursosComponent implements OnInit {
 
   guardarCurso() {
     if (this.cursoForm.valid && this.isAdmin) {
-      // Solo permitir guardar si es admin
-      if (this.cursoId) {
-        this.cursosService
-          .actualizarCurso(this.cursoId, this.cursoForm.value)
-          .pipe(take(1))
-          .subscribe(() => this.router.navigate(['/cursos/lista-cursos']));
-      } else {
-        this.cursosService
-          .agregarCurso(this.cursoForm.value)
-          .pipe(take(1))
-          .subscribe(() => this.router.navigate(['/cursos/lista-cursos']));
-      }
+      const request$ = this.cursoId
+        ? this.cursosService.actualizarCurso(this.cursoId, this.cursoForm.value)
+        : this.cursosService.agregarCurso(this.cursoForm.value);
+
+      request$
+        .pipe(take(1))
+        .subscribe(() => this.router.navigate(['/cursos/lista-cursos']));
     }
   }
 }

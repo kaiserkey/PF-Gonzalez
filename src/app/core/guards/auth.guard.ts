@@ -13,18 +13,12 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    console.log('AuthGuard: Verificando acceso...');
-
     if (!this.authService.isAuthenticated()) {
-      console.log('AuthGuard: Usuario no autenticado, redirigiendo a /login');
       this.router.navigate(['/login']);
       return false;
     }
 
     const userPerfil = this.authService.userPerfil;
-    console.log('AuthGuard: Perfil del usuario:', userPerfil);
-
-    // Rutas permitidas por perfil
     const adminRoutes = [
       '/alumnos',
       '/clases',
@@ -34,12 +28,10 @@ export class AuthGuard implements CanActivate {
     ];
     const userRoutes = ['/cursos', '/clases', '/inscripciones'];
 
-    // Si es admin, puede acceder a todo
     if (userPerfil === 'admin') {
       return true;
     }
 
-    // Si es usuario, solo puede acceder a las rutas permitidas
     if (
       userPerfil === 'usuario' &&
       userRoutes.some((route) => state.url.startsWith(route))
@@ -47,7 +39,6 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    console.log('AuthGuard: Acceso denegado. Redirigiendo...');
     this.router.navigate(['/']);
     return false;
   }

@@ -29,18 +29,17 @@ export class AuthService {
         const userData = {
           id: user.id,
           email: user.email,
-          perfil: user.perfil, // Se cambió "role" por "perfil"
-          nombre: user.nombre, // Se mantiene el nombre
+          perfil: user.perfil,
+          nombre: user.nombre,
         };
 
         this.guardarUsuarioLocal(userData);
         this.userSubject.next(userData);
         return userData;
       }),
-      catchError((error) => {
-        console.error('Error en login:', error);
-        return throwError(() => new Error('Error al intentar iniciar sesión'));
-      })
+      catchError(() =>
+        throwError(() => new Error('Error al intentar iniciar sesión'))
+      )
     );
   }
 
@@ -55,15 +54,14 @@ export class AuthService {
   }
 
   get userPerfil(): string {
-    return this.userSubject.value?.perfil || 'usuario'; // Se cambió "role" por "perfil"
+    return this.userSubject.value?.perfil || 'usuario';
   }
 
   public obtenerUsuarioLocal(): any {
     try {
       const user = localStorage.getItem('user');
       return user ? JSON.parse(user) : null;
-    } catch (error) {
-      console.error('Error al obtener usuario del localStorage', error);
+    } catch {
       return null;
     }
   }

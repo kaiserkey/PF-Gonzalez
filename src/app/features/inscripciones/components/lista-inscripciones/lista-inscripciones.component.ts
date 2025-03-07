@@ -3,7 +3,6 @@ import {
   InscripcionesService,
   Inscripcion,
 } from '../../../../core/services/inscripciones.service';
-import { AuthService } from '../../../../core/services/auth.service'; // Importar AuthService
 
 @Component({
   selector: 'app-lista-inscripciones',

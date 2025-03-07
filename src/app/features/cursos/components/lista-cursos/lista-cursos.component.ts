@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CursosService, Curso } from '../../../../core/services/cursos.service';
-import { AuthService } from '../../../../core/services/auth.service'; // Importar AuthService
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-lista-cursos',
@@ -9,19 +9,19 @@ import { AuthService } from '../../../../core/services/auth.service'; // Importa
   standalone: false,
 })
 export class ListaCursosComponent implements OnInit {
-  displayedColumns = ['nombre', 'horas', 'clases', 'profesor']; // Columnas iniciales
+  displayedColumns = ['nombre', 'horas', 'clases', 'profesor'];
   cursos: Curso[] = [];
-  isAdmin: boolean = false; // Variable para verificar si es admin
+  isAdmin = false;
 
   constructor(
     private cursosService: CursosService,
-    private authService: AuthService // Inyectar AuthService
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
-    this.isAdmin = this.authService.userPerfil === 'admin'; // Verificar si es admin
+    this.isAdmin = this.authService.userPerfil === 'admin';
     if (this.isAdmin) {
-      this.displayedColumns.push('acciones'); // Agregar columna de acciones solo para admin
+      this.displayedColumns.push('acciones');
     }
     this.cargarCursos();
   }
@@ -34,11 +34,10 @@ export class ListaCursosComponent implements OnInit {
   }
 
   eliminarCurso(id: number) {
-    if (this.isAdmin) {
-      // Solo permitir eliminar si es admin
-      this.cursosService.eliminarCurso(id).subscribe(() => {
-        this.cursos = this.cursos.filter((curso) => curso.id !== id);
-      });
-    }
+    if (!this.isAdmin) return;
+
+    this.cursosService.eliminarCurso(id).subscribe(() => {
+      this.cursos = this.cursos.filter((curso) => curso.id !== id);
+    });
   }
 }
