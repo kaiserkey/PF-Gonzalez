@@ -1,4 +1,3 @@
-```
 # 📌 PF-GONZALEZ
 
 Este proyecto fue generado con [Angular CLI](https://github.com/angular/angular-cli) versión 19.0.4.
@@ -15,7 +14,7 @@ Ejecuta el siguiente comando en la terminal dentro del directorio del proyecto:
 
 ```bash
 ng serve -o
-```
+
 
 Esto iniciará el servidor en `http://localhost:4200/` y abrirá automáticamente el navegador.
 
