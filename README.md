@@ -1,59 +1,95 @@
-# PFGONZALEZ
+```
+# 📌 PF-GONZALEZ
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.4.
+Este proyecto fue generado con [Angular CLI](https://github.com/angular/angular-cli) versión 19.0.4.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🚀 Iniciar el Proyecto
+
+Para ejecutar el proyecto en modo desarrollo, sigue los siguientes pasos:
+
+### 1️⃣ **Levantar el servidor Angular**
+
+Ejecuta el siguiente comando en la terminal dentro del directorio del proyecto:
 
 ```bash
-ng serve
+ng serve -o
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Esto iniciará el servidor en `http://localhost:4200/` y abrirá automáticamente el navegador.
 
-## Code scaffolding
+### 2️⃣ **Levantar JSON-Server**
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+El proyecto utiliza `json-server` como backend falso para simular la base de datos. Para iniciarlo, ejecuta:
 
-```bash
-ng generate component component-name
+```
+json-server --watch db.json --port 3000
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Esto levantará el servidor en `http://localhost:3000/` y expondrá los datos simulados.
 
-```bash
-ng generate --help
+---
+
+## 🔑 Usuarios y Contraseñas
+
+| **Usuario**   | **Email**                                                  | **Contraseña** | **Rol** |
+| ------------- | ---------------------------------------------------------- | -------------- | ------- |
+| Administrador | [admin@example.com](https://mailto:admin@example.com/)     | admin123       | Admin   |
+| Usuario       | [usuario@example.com](https://mailto:usuario@example.com/) | usuario123     | Usuario |
+
+> ⚠ Nota: Estos son los usuarios predefinidos en db.json. Puedes modificarlos según sea necesario.
+> 
+
+---
+
+## 🛠 Comandos Útiles
+
+### 📌 Generar un componente
+
+Si necesitas generar un nuevo componente, usa:
+
+```
+ng generate component nombre-del-componente
 ```
 
-## Building
+También puedes usar la forma corta:
 
-To build the project run:
+```
+ng g c nombre-del-componente
+```
 
-```bash
+### 📌 Construir el proyecto
+
+Para compilar el proyecto y generar los archivos listos para producción:
+
+```
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Esto generará los archivos en la carpeta `dist/`.
 
-## Running unit tests
+---
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## 🧪 Ejecutar Pruebas Unitarias
 
-```bash
+El proyecto usa Karma y Jasmine para pruebas unitarias. Para ejecutarlas, usa:
+
+```
 ng test
 ```
 
-## Running end-to-end tests
+Si solo quieres ejecutar pruebas de un archivo específico (por ejemplo, las pruebas de inscripciones):
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
+```
+ng test --include=src/app/Tests/inscripciones.service.spec.ts
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+## 📚 Recursos Adicionales
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- [Documentación Oficial de Angular](https://angular.io/docs)
+- [Guía de JSON-Server](https://github.com/typicode/json-server)
+- [Documentación de Karma](https://karma-runner.github.io/latest/index.html)
+- [Guía de Jasmine](https://jasmine.github.io/)
