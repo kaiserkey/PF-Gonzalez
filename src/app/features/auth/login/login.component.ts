@@ -12,9 +12,7 @@ export class LoginComponent {
   email = '';
   password = '';
 
-  constructor(private authService: AuthService, private router: Router) {
-    console.log('LoginComponent constructor');
-  }
+  constructor(private authService: AuthService, private router: Router) {}
 
   login() {
     if (!this.email || !this.password) {

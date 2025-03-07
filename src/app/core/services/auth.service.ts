@@ -35,6 +35,13 @@ export class AuthService {
 
         this.guardarUsuarioLocal(userData);
         this.userSubject.next(userData);
+
+        if (userData.perfil === 'admin') {
+          this.router.navigate(['/alumnos/lista-alumnos']);
+        } else {
+          this.router.navigate(['/cursos/lista-cursos']);
+        }
+
         return userData;
       }),
       catchError(() =>
