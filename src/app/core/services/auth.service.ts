@@ -58,7 +58,7 @@ export class AuthService {
     return this.userSubject.value?.perfil || 'usuario'; // Se cambió "role" por "perfil"
   }
 
-  private obtenerUsuarioLocal(): any {
+  public obtenerUsuarioLocal(): any {
     try {
       const user = localStorage.getItem('user');
       return user ? JSON.parse(user) : null;

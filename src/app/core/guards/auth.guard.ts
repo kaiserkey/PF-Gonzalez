@@ -25,8 +25,14 @@ export class AuthGuard implements CanActivate {
     console.log('AuthGuard: Perfil del usuario:', userPerfil);
 
     // Rutas permitidas por perfil
-    const adminRoutes = ['/alumnos', '/cursos', '/inscripciones', '/usuarios'];
-    const userRoutes = ['/cursos', '/inscripciones'];
+    const adminRoutes = [
+      '/alumnos',
+      '/clases',
+      '/cursos',
+      '/inscripciones',
+      '/usuarios',
+    ];
+    const userRoutes = ['/cursos', '/clases', '/inscripciones'];
 
     // Si es admin, puede acceder a todo
     if (userPerfil === 'admin') {

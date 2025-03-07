@@ -9,15 +9,28 @@
         </div>
         <div class="card-body">
           <form [formGroup]="inscripcionForm" (ngSubmit)="guardarInscripcion()">
-            <!-- Campo Nombre (solo lectura) -->
+            <!-- Campo Nombre -->
             <div class="mb-3">
-              <label for="nombre" class="form-label">Nombre</label>
-              <input
-                id="nombre"
-                formControlName="nombre"
+              <label for="idAlumno" class="form-label">Alumno</label>
+              <select
+                id="idAlumno"
+                formControlName="idAlumno"
                 class="form-control form-control-lg"
-                readonly
-              />
+              >
+                <option value="" disabled>Seleccione un alumno</option>
+                <option *ngFor="let alumno of alumnos" [value]="alumno.id">
+                  {{ alumno.nombre }}
+                </option>
+              </select>
+              <div
+                *ngIf="
+                  inscripcionForm.get('idAlumno')?.invalid &&
+                  inscripcionForm.get('idAlumno')?.touched
+                "
+                class="text-danger"
+              >
+                Alumno requerido.
+              </div>
             </div>
 
             <!-- Campo Curso (select) -->

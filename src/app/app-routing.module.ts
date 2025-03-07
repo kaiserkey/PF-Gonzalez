@@ -26,6 +26,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'clases',
+    loadChildren: () =>
+      import('./features/clases/modulos/clases.module').then(
+        (m) => m.ClasesModule
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'inscripciones',
     loadChildren: () =>
       import('./features/inscripciones/modulos/inscripciones.module').then(
