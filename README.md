@@ -24,7 +24,7 @@ El proyecto utiliza `json-server` como backend falso para simular la base de d
 
 ```
 json-server --watch db.json --port 3000
-```
+
 
 Esto levantará el servidor en `http://localhost:3000/` y expondrá los datos simulados.
 
@@ -50,13 +50,13 @@ Si necesitas generar un nuevo componente, usa:
 
 ```
 ng generate component nombre-del-componente
-```
+
 
 También puedes usar la forma corta:
 
 ```
 ng g c nombre-del-componente
-```
+
 
 ### 📌 Construir el proyecto
 
@@ -64,7 +64,7 @@ Para compilar el proyecto y generar los archivos listos para producción:
 
 ```
 ng build
-```
+
 
 Esto generará los archivos en la carpeta `dist/`.
 
@@ -76,13 +76,13 @@ El proyecto usa Karma y Jasmine para pruebas unitarias. Para ejecutarlas, usa:
 
 ```
 ng test
-```
+
 
 Si solo quieres ejecutar pruebas de un archivo específico (por ejemplo, las pruebas de inscripciones):
 
 ```
 ng test --include=src/app/Tests/inscripciones.service.spec.ts
-```
+
 
 ---
 
