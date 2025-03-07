@@ -12,7 +12,7 @@ import {
   standalone: false,
 })
 export class ListaUsuariosComponent implements OnInit {
-  displayedColumns = ['nombre', 'email', 'direccion', 'telefono', 'role'];
+  displayedColumns = ['nombre', 'email', 'direccion', 'telefono', 'perfil'];
   dataSource = new MatTableDataSource<Usuario>([]);
 
   constructor(private usuariosService: UsuariosService) {}

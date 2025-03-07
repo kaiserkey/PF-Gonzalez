@@ -21,21 +21,23 @@ export class AuthGuard implements CanActivate {
       return false;
     }
 
-    const userRole = this.authService.userPerfil;
-    console.log('AuthGuard: Rol del usuario:', userRole);
+    const userPerfil = this.authService.userPerfil;
+    console.log('AuthGuard: Perfil del usuario:', userPerfil);
 
-    if (userRole === 'admin') {
+    // Rutas permitidas por perfil
+    const adminRoutes = ['/alumnos', '/cursos', '/inscripciones', '/usuarios'];
+    const userRoutes = ['/cursos', '/inscripciones'];
+
+    // Si es admin, puede acceder a todo
+    if (userPerfil === 'admin') {
       return true;
     }
 
-    const allowedRoutesForUser = [
-      '/cursos/lista-cursos',
-      '/inscripciones/lista-inscripciones',
-      '/inscripciones/abm-inscripciones',
-      '/inscripciones/abm-inscripciones/:id',
-    ];
-
-    if (userRole === 'usuario' && allowedRoutesForUser.includes(state.url)) {
+    // Si es usuario, solo puede acceder a las rutas permitidas
+    if (
+      userPerfil === 'usuario' &&
+      userRoutes.some((route) => state.url.startsWith(route))
+    ) {
       return true;
     }
 

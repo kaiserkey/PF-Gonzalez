@@ -8,14 +8,14 @@ export interface Usuario {
   nombre: string;
   direccion: string;
   telefono: string;
-  role: string;
+  perfil: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsuariosService {
-  private apiUrl = 'http://localhost:3000/users';
+  private apiUrl = 'http://localhost:3000/usuarios';
 
   constructor(private http: HttpClient) {}
 
